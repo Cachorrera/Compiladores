@@ -155,7 +155,7 @@ public class AnalisadorLexico{
                   }else if(isAlpha(c)){
                       symbol+=c;
                       estado = S5;
-                  }else{
+                  }else if(c == ' ' || c == '\t' || c == '\n' || c== '\r'){
                       token = new Token();
                       token.setCode(Token.IDENTIFICADOR);
                       token.setSymbol(symbol);
