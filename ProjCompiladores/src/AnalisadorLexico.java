@@ -29,8 +29,9 @@ public class AnalisadorLexico{
               fContent.append(linha);
           }
           fileContent = fContent.toString()+'\0';  // forcei o caractere fim de arquivo
+          System.out.println(fileContent);
           index = 0;
-          estado = S0;
+          //estado = S0;
        }
        catch(Exception ex){
            System.err.println("Erro ao abrir arquivo");
@@ -58,7 +59,7 @@ public class AnalisadorLexico{
        return (index == fileContent.length());
    }
    
-   public void nextToken(){
+   public Token nextToken(){
        String symbol="";
        estado = S0;
        Token token;
@@ -77,11 +78,10 @@ public class AnalisadorLexico{
                       estado = S0;
                   }
                   else if (c == '\0'){
-                      currentToken = new Token();
-                      currentToken.setCode(Token.EOF);
-                      currentToken.setSymbol("END OF FILE");
-                      
-                      return;
+                      token = new Token();
+                      token.setCode(Token.EOF);
+                      token.setSymbol("END OF FILE");
+                      return token;
                   }
                   else if (isDigit(c)){
                       symbol+=c;
@@ -113,13 +113,11 @@ public class AnalisadorLexico{
                       estado = S2;
                   }
                   else{
-                      currentToken = new Token();
+                      token = new Token();
+                      token.setCode(Token.NUMERO_INTEIRO);
+                      token.setSymbol(symbol);
                       retroceder();
-                      estado = S0;
-                      currentToken.setCode(Token.NUMERO_INTEIRO);
-                      currentToken.setSymbol(symbol);
-                      symbol="";
-                      return;
+                      return token;
                   }
                   break;
               case S2:
@@ -141,13 +139,11 @@ public class AnalisadorLexico{
                       estado = S3;
                   }
                   else{
-                      currentToken = new Token();
-                      currentToken.setCode(Token.NUMERO_PONTO_FIXO);
-                      currentToken.setSymbol(symbol);
-                      estado = S0;
-                      symbol = "";
+                      token = new Token();
+                      token.setCode(Token.NUMERO_PONTO_FIXO);
+                      token.setSymbol(symbol);
                       retroceder();
-                      return;
+                      return token;
                   }
                   break;
               case S5:
@@ -160,18 +156,16 @@ public class AnalisadorLexico{
                       symbol+=c;
                       estado = S5;
                   }else{
-                      currentToken = new Token();
-                      currentToken.setCode(Token.IDENTIFICADOR);
-                      currentToken.setSymbol(symbol);
-                      estado = S0;
-                      symbol="";
+                      token = new Token();
+                      token.setCode(Token.IDENTIFICADOR);
+                      token.setSymbol(symbol);
                       retroceder();
-                      return;
+                      return token;
                   }
                   break;
               case SL:
                   estado = S0;
-                  return;
+                  return null;
                   
           }
        }
