@@ -2,7 +2,8 @@ public class Token{
     public static final int EOF               = -1;
     public static final int NUMERO_INTEIRO    =  0;
     public static final int NUMERO_PONTO_FIXO =  1;
-    public static final int IDENTIFICADOR =  2;
+    public static final int IDENTIFICADOR     =  2;
+    public static final int OPERADOR          =  3;
     
     private int    code;
     private String symbol;
